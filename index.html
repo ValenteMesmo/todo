@@ -1,0 +1,35 @@
+<html>
+    <header>
+        <script src="elements/x-storage.js"></script>
+        <script src="elements/todo-list.js"></script>
+        <script src="elements/todo-new.js"></script>
+        <script>
+            function onLoad(){
+
+                const storage = document.querySelector('x-storage');
+                const todoList = document.querySelector('todo-list');
+                const todoNew = document.querySelector('todo-new');
+
+                todoList.setItems(storage.load() || []);
+
+                todoList.update = function(items){
+                    storage.save(items);
+                };
+
+                todoNew.onsave = function(text){
+                    const items = storage.load() || [];
+
+                    items.push({title: text});
+                    storage.save(items);
+
+                    todoList.setItems(items);
+                };
+            }
+        </script>
+    </header>
+    <body onload="onLoad()">
+        <x-storage></x-storage>
+        <todo-new></todo-new>
+        <todo-list></todo-list>
+    </body>
+</html>
