@@ -47,6 +47,19 @@
                 span.textContent = f.title;
                 li.appendChild(span);
 
+                const remove_btn = document.createElement('span');
+                remove_btn.onclick = function(){
+                    const index = items.indexOf(f);
+                    if(index > -1){
+                        items.splice(index, 1);
+                        context.update(items);
+
+                        context.setItems(items);
+                    }
+                }
+                remove_btn.textContent = '-x-';
+                li.appendChild(remove_btn);
+
                 ul.appendChild(li);
             });
 
