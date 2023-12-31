@@ -14,7 +14,30 @@
             const value = localStorage.getItem(list_key);
 
             if(value){
-                return JSON.parse(value);
+                const result = JSON.parse(value);
+                result.forEach(f=> {
+
+                    if(f.streakBegin){
+                        f.streakBegin = new Date(f.streakBegin);
+                    }
+
+                    if(f.streakEnd){
+                        f.streakEnd = new Date(f.streakEnd);
+                    }
+
+                    if(!f.streakBegin || !f.streakEnd){
+                        return;
+                    }
+                    
+                    const streakHours = 
+                        (new Date() - f.streakEnd) / (1000 * 60 * 60); 
+
+                    if(streakHours > 24) {
+                        f.streakBegin = f.streakEnd = null;
+                    }
+                });
+
+                return result;
             }
 
             return null;

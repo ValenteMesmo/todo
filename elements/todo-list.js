@@ -33,19 +33,41 @@
                 const li = document.createElement('li');
 
                 const checkbox = document.createElement('input');
+
+                const checked = 
+                    f.streakEnd 
+                    && f.streakEnd.toLocaleDateString() == new Date().toLocaleDateString();
+
                 checkbox.setAttribute('type','checkbox');
-                if(f.done){
+                if(checked){
                     checkbox.setAttribute('checked', '');
                 }
+
                 checkbox.onchange = function (e){
-                    f.done = e.target.checked;
+                    if(e.target.checked){
+                        if(f.streakBegin){
+                            f.streakEnd = new Date(); 
+                        }
+                        else {
+                            f.streakEnd = f.streakBegin = new Date();
+                        }
+                    }
+                    else {
+                        f.streakEnd = null;
+                    }
                     context.update(items);
                 };
                 li.appendChild(checkbox);
 
                 const span = document.createElement('span');
-                span.textContent = f.title;
+                span.textContent = f.type == 1 ? `🔁${f.title}`: f.title;
                 li.appendChild(span);
+
+                if(f.streakEnd){ 
+                    const streak_count = document.createElement('span');
+                    streak_count.textContent = Math.floor((f.streakEnd - f.streakBegin) / (1000 * 60 * 60 * 24)) + checked;
+                    li.appendChild(streak_count);
+                }
 
                 const remove_btn = document.createElement('span');
                 remove_btn.onclick = function(){

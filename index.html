@@ -16,10 +16,10 @@
                     storage.save(items);
                 };
 
-                todoNew.onsave = function(text){
+                todoNew.onsave = function(item){
                     const items = storage.load() || [];
 
-                    items.push({title: text});
+                    items.push(item);
                     storage.save(items);
 
                     todoList.setItems(items);
