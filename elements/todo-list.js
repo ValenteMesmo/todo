@@ -65,7 +65,7 @@
 
                 if(f.streakEnd){ 
                     const streak_count = document.createElement('span');
-                    streak_count.textContent = Math.floor((f.streakEnd - f.streakBegin) / (1000 * 60 * 60 * 24)) + checked;
+                    streak_count.textContent = Math.ceil((f.streakEnd - f.streakBegin) / (1000 * 60 * 60 * 24)) + checked;
                     li.appendChild(streak_count);
                 }
 
