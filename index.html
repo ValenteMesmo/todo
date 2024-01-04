@@ -1,35 +1,41 @@
 <html>
     <header>
         <script src="elements/x-storage.js"></script>
-        <script src="elements/todo-list.js"></script>
         <script src="elements/todo-new.js"></script>
+        <script src="elements/todo-item.js"></script>
         <script>
             function onLoad(){
 
                 const storage = document.querySelector('x-storage');
-                const todoList = document.querySelector('todo-list');
                 const todoNew = document.querySelector('todo-new');
 
-                todoList.setItems(storage.load() || []);
-
-                todoList.update = function(items){
-                    storage.save(items);
-                };
+                const items = storage.load();
 
                 todoNew.onsave = function(item){
-                    const items = storage.load() || [];
 
                     items.push(item);
                     storage.save(items);
 
-                    todoList.setItems(items);
+                    location.reload();
                 };
+
+                items.forEach((f, i)=>{
+                    const todoItem = document.createElement('todo-item');
+                    todoItem.setItem(f);
+                    todoItem.update = function(item){
+                        items[i] = item;
+                        storage.save(items);
+                        todoItem.setItem(item);
+                    };
+
+                    document.body.appendChild(todoItem);
+                });
             }
         </script>
     </header>
     <body onload="onLoad()">
         <x-storage></x-storage>
         <todo-new></todo-new>
-        <todo-list></todo-list>
+        <hr>
     </body>
 </html>
