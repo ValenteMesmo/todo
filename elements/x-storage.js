@@ -40,7 +40,7 @@
                 return result;
             }
 
-            return null;
+            return [];
         }
     }
 

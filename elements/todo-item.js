@@ -14,7 +14,16 @@
 
             const frag = document.createDocumentFragment();
             const style = document.createElement('style');
-            style.textContent = '';
+            style.textContent = `
+                .delete-button {
+                    cursor: pointer;
+                    color: lightgray;
+                }
+
+                .delete-button:hover {
+                    color: red;
+                }
+            `;
 
             frag.appendChild(style);
             frag.appendChild(document.createElement('div'));
@@ -51,6 +60,9 @@
                     }
                 }
                 else {
+                    if (item.streakBegin?.toDateString() == item.streakEnd?.toDateString()){
+                        item.streakBegin = null;
+                    }
                     item.streakEnd = null;
                 }
                 context.update(item);
@@ -79,7 +91,7 @@
             const editButton = document.createElement('span');
             editButton.textContent = ' 🗑';
             editButton.title = 'delete';
-            editButton.style = 'cursor: pointer; color: lightgray;';
+            editButton.className = 'delete-button';
             editButton.onclick = function (){
                 if(confirm('delete?') === true){
                     context.delete(item);
