@@ -23,6 +23,7 @@
         }
 
         update = function (){};
+        delete = function (){};
 
         setItem(item){
             this.connectedCallback();
@@ -74,6 +75,17 @@
                     );
                 frag.appendChild(streakCount);
             }
+
+            const editButton = document.createElement('span');
+            editButton.textContent = ' 🗑';
+            editButton.title = 'delete';
+            editButton.style = 'cursor: pointer; color: lightgray;';
+            editButton.onclick = function (){
+                if(confirm('delete?') === true){
+                    context.delete(item);
+                }
+            };
+            frag.appendChild(editButton);
 
             content.innerHTML = '';
             content.appendChild(frag);

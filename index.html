@@ -6,8 +6,11 @@
         <script>
             function onLoad(){
 
+                const context = this;
                 const storage = document.querySelector('x-storage');
                 const todoNew = document.querySelector('todo-new');
+                const content = document.getElementById('content');
+                content.innerHTML = '';
 
                 const items = storage.load();
 
@@ -16,10 +19,10 @@
                     items.push(item);
                     storage.save(items);
 
-                    location.reload();
+                    context.onLoad();
                 };
 
-                items.forEach((f, i)=>{
+                items.forEach(function (f,i) {
                     const todoItem = document.createElement('todo-item');
                     todoItem.setItem(f);
                     todoItem.update = function(item){
@@ -27,8 +30,13 @@
                         storage.save(items);
                         todoItem.setItem(item);
                     };
+                    todoItem.delete = function (){
+                        items.splice(i,1);
+                        storage.save(items);
+                        context.onLoad();
+                    };
 
-                    document.body.appendChild(todoItem);
+                    content.appendChild(todoItem);
                 });
             }
         </script>
@@ -37,5 +45,6 @@
         <x-storage></x-storage>
         <todo-new></todo-new>
         <hr>
+        <div id='content'></div>
     </body>
 </html>
