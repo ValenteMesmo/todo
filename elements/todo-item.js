@@ -58,12 +58,11 @@
                     else {
                         item.streakEnd= item.streakBegin = new Date();
                     }
+                    item.count++;
                 }
                 else {
-                    if (item.streakBegin?.toDateString() == item.streakEnd?.toDateString()){
-                        item.streakBegin = null;
-                    }
                     item.streakEnd = null;
+                    item.count--;
                 }
                 context.update(item);
             };
@@ -73,18 +72,10 @@
             span.textContent = item.title;
             frag.appendChild(span);
 
-            if(item.streakBegin){
+            if(item.count > 0){
                 const streakCount = document.createElement('span');
                 streakCount.textContent = 
-                    (!!checked ? ' 🔥' : ' ❗')
-                    + Math.max(
-                        Math.ceil(
-                            (
-                                new Date() - item.streakBegin
-                            ) / day_in_milliseconds
-                        ) + checked
-                        , 1
-                    );
+                    (!!checked ? ' 🔥' : ' ❗') + item.count;
                 frag.appendChild(streakCount);
             }
 

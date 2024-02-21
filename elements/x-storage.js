@@ -18,26 +18,37 @@
                 result.forEach(f=> {
 
                     if(f.streakBegin){
-                        f.streakBegin = new Date(f.streakBegin);
+                        f.streakBegin = new Date(new Date(f.streakBegin).toDateString());
                     }
 
                     if(f.streakEnd){
-                        f.streakEnd = new Date(f.streakEnd);
+                        f.streakEnd = new Date(new Date(f.streakEnd).toDateString());
                     }
 
-                    if(!f.streakBegin || !f.streakEnd){
+                    f.count = Number(f.count);
+                    if(isNaN(f.count)) {
+                        f.count = 0;
+                    }
+
+                    if(!f.streakBegin){
+                        f.streakEnd = null;
+                        return;
+                    }
+
+                    if(!f.streakEnd) {
                         return;
                     }
                     
                     const streakHours = 
                         (new Date() - f.streakEnd) / (1000 * 60 * 60); 
 
-                    if(streakHours > 72) {
+                    if(streakHours > 24) {
                         f.streakBegin = f.streakEnd = null;
+                        f.count = 0;
                     }
                 });
 
-                return result;
+                return result; 
             }
 
             return [];
