@@ -40,7 +40,8 @@
                     }
                     
                     const streakHours = 
-                        (new Date() - f.streakEnd) / (1000 * 60 * 60); 
+                        (new Date(new Date().toDateString()) 
+                        - f.streakEnd) / (1000 * 60 * 60);
 
                     if(streakHours > 24) {
                         f.streakBegin = f.streakEnd = null;
