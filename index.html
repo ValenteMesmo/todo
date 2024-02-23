@@ -6,12 +6,17 @@
         <script src="elements/todo-new.js"></script>
         <script src="elements/todo-item.js"></script>
         <script src="elements/google-backup.js"></script>
-        <link rel="stylesheet" href="fluidable-min.css">
         <style>
+            @media only screen and (min-width:1281px) {
+                html {
+                    max-width: 60%;
+                    margin: auto;
+                }
+            }
+
             body {
                 font-size: 3vh;
             }
-
         </style>
 
         <script>
@@ -35,8 +40,9 @@
 
                 items.forEach(function (f,i) {
                     const todoItem = document.createElement('todo-item');
-                    todoItem.classList.add("col-12");
-                    todoItem.classList.add("col-dt-3");
+                    //todoItem.classList.add("item");
+                    //todoItem.classList.add("col-12");
+                    //todoItem.classList.add("col-dt-3");
                     todoItem.setItem(f);
                     todoItem.update = function(item){
                         items[i] = item;
