@@ -23,6 +23,11 @@
                 .delete-button:hover {
                     color: red;
                 }
+
+                input[type="checkbox"] {
+                    width: 3vh;
+                    height: 2.4vh;
+                }
             `;
 
             frag.appendChild(style);
