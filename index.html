@@ -1,11 +1,11 @@
 <html>
     <head>
         <title>TODOs</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link id="page_favicon" href="favicon.ico" rel="icon" type="image/x-icon">
         <script src="elements/x-storage.js"></script>
         <script src="elements/todo-new.js"></script>
         <script src="elements/todo-item.js"></script>
-        <script src="elements/google-backup.js"></script>
         <style>
             @media only screen and (min-width:1281px) {
                 html {
@@ -28,7 +28,7 @@
                 const content = document.getElementById('content');
                 content.innerHTML = '';
 
-                const items = storage.load();
+                var items = storage.load();
 
                 todoNew.onsave = function(item){
 
@@ -38,25 +38,39 @@
                     context.onLoad();
                 };
 
-                items.forEach(function (f,i) {
-                    const todoItem = document.createElement('todo-item');
-                    //todoItem.classList.add("item");
-                    //todoItem.classList.add("col-12");
-                    //todoItem.classList.add("col-dt-3");
-                    todoItem.setItem(f);
-                    todoItem.update = function(item){
-                        items[i] = item;
-                        storage.save(items);
-                        todoItem.setItem(item);
-                    };
-                    todoItem.delete = function (){
-                        items.splice(i,1);
-                        storage.save(items);
-                        context.onLoad();
-                    };
+                function refresh()
+                {
+                    content.innerHTML = '';
+                    items.forEach(function (f,i) {
+                        const todoItem = document.createElement('todo-item');
+                        //todoItem.classList.add("item");
+                        //todoItem.classList.add("col-12");
+                        //todoItem.classList.add("col-dt-3");
+                        todoItem.setItem(f);
+                        console.log(items);
+                        todoItem.update = function(item){
+                            items[i] = item;
+                            var checked = items.filter(f=> !!f.streakEnd);
+                            var previouslyChecked = items.filter(f=> !f.streakEnd && f.count > 0);
+                            var unchecked = items.filter(f=> !f.streakEnd && f.count == 0);
 
-                    content.appendChild(todoItem);
-                });
+                            items = [...checked, ...previouslyChecked, ...unchecked];
+                            
+                            storage.save(items);
+                            refresh();
+                            //todoItem.setItem(item);
+                        };
+                        todoItem.delete = function (){
+                            items.splice(i,1);
+                            storage.save(items);
+                            context.onLoad();
+                        };
+
+                        content.appendChild(todoItem);
+                    });
+                }
+                
+                refresh();
             }
         </script>
     </head>
